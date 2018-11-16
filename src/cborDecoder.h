@@ -84,7 +84,6 @@ class CborReader {
     ~CborReader();
     void Run();
     void SetListener(CborListener &listener);
-    void GetCborData(String &Cborpackage);
   private:
     CborListener *listener;
     CborInput *input;

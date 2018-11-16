@@ -343,12 +343,11 @@ void CborReader::Run() {
       } else break;
     } else if (state == STATE_STRING_DATA) {
       if (input->hasBytes(currentLength)) {
-        unsigned char data[currentLength];
-
+        char data[currentLength];
         input->getBytes(data, currentLength);
         state = STATE_TYPE;
+        // Note: *data will be invalid once we leave the function, so it is up to the user to copy it.
         listener->OnString(data, currentLength);
-        str = "";
       } else break;
     } else if (state == STATE_ARRAY) {
       if (input->hasBytes(currentLength)) {
