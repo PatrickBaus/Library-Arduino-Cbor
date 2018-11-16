@@ -47,8 +47,7 @@ class CborStaticOutput : public CborOutput {
 
 class CborDynamicOutput : public CborOutput {
   public:
-    CborDynamicOutput();
-    CborDynamicOutput(uint32_t initalCapacity);
+    CborDynamicOutput(uint32_t initalCapacity = 256);
     ~CborDynamicOutput();
 
     virtual unsigned char *getData();

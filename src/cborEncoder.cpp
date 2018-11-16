@@ -1,4 +1,4 @@
-#include "CborEncoder.h"
+#include "cborEncoder.h"
 #include "Arduino.h"
 #include <stdlib.h>
 
@@ -46,10 +46,6 @@ void CborStaticOutput::resetBuffer() {
   this->cursor = this->offset;
 }
 
-
-CborDynamicOutput::CborDynamicOutput() {
-  init(256);
-}
 
 CborDynamicOutput::CborDynamicOutput(const uint32_t initalCapacity) {
   init(initalCapacity);
