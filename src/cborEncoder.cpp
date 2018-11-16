@@ -185,11 +185,6 @@ void CborWriter::writeString(const char *data, const unsigned int size) {
   output->putBytes((const unsigned char *)data, size);
 }
 
-void CborWriter::writeString(const String str) {
-  writeTypeAndValue(3, (uint32_t)str.length());
-  output->putBytes((const unsigned char *)str.c_str(), str.length());
-}
-
 void CborWriter::writeArray(const unsigned int size) {
   writeTypeAndValue(4, (uint32_t)size);
 }

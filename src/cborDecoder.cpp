@@ -347,8 +347,7 @@ void CborReader::Run() {
 
         input->getBytes(data, currentLength);
         state = STATE_TYPE;
-        String str = (const char *) data;
-        listener->OnString(str);
+        listener->OnString(data, currentLength);
         str = "";
       } else break;
     } else if (state == STATE_ARRAY) {

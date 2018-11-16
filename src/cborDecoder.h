@@ -63,7 +63,7 @@ public:
   virtual void OnInteger(int32_t value) = 0;
   virtual void OnBoolean(const bool value) = 0;
   virtual void OnBytes(unsigned char *data, unsigned int size) = 0;
-  virtual void OnString(String &str) = 0;
+  virtual void OnString(const char *data, const unsigned int size) = 0;
   virtual void OnArray(unsigned int size) = 0;
   virtual void OnMap(unsigned int size) = 0;
   virtual void OnTag(uint32_t tag) = 0;
