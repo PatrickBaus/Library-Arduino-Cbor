@@ -20,7 +20,8 @@
 #ifndef CBORDECODER_H
 #define CBORDECODER_H
 
-#include <stdint.h>
+#include <stdint.h>    // uint8_t, etc.
+#include <stdlib.h>    // size_t
 
 #define INT_MAX 2
 #define INT_MIN 2
@@ -42,18 +43,18 @@ typedef enum {
 
 class CborInput {
   public:
-    CborInput(void *data, int size);
+    CborInput(void *data, const size_t size);
     ~CborInput();
 
-    bool hasBytes(unsigned int count);
+    bool hasBytes(const size_t count);
     unsigned char getByte();
     unsigned short getShort();
     uint32_t getInt();
     uint64_t getLong();
-    void getBytes(void *to, int count);
+    void getBytes(void *to, const size_t count);
   private:
     unsigned char *data;
-    int size;
+    size_t size;
     size_t offset;
 };
 
@@ -61,8 +62,8 @@ class CborListener {
   public:
     virtual void OnInteger(int32_t value) = 0;
     virtual void OnBoolean(const bool value) = 0;
-    virtual void OnBytes(unsigned char *data, unsigned int size) = 0;
-    virtual void OnString(const char *data, const unsigned int size) = 0;
+    virtual void OnBytes(unsigned char *data, const size_t size) = 0;
+    virtual void OnString(const char *data, const size_t size) = 0;
     virtual void OnArray(unsigned int size) = 0;
     virtual void OnMap(unsigned int size) = 0;
     virtual void OnTag(uint32_t tag) = 0;
