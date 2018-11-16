@@ -1,7 +1,7 @@
 #include "cborDecoder.h"
 #include "Arduino.h"
 
-CborInput::CborInput(void *data, int size) {
+CborInput::CborInput(void *data, const int size) {
   this->data = (unsigned char *)data;
   this->size = size;
   this->offset = 0;

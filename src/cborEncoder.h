@@ -20,7 +20,7 @@
 #ifndef CBORENCODER_H
 #define CBORENCODER_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
 class CborOutput {
   public:

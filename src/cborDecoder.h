@@ -20,7 +20,7 @@
 #ifndef CBORDECODER_H
 #define CBORDECODER_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
 #define INT_MAX 2
 #define INT_MIN 2
@@ -41,7 +41,6 @@ typedef enum {
 } CborReaderState;
 
 class CborInput {
-
   public:
     CborInput(void *data, int size);
     ~CborInput();
@@ -59,22 +58,22 @@ class CborInput {
 };
 
 class CborListener {
-public:
-  virtual void OnInteger(int32_t value) = 0;
-  virtual void OnBoolean(const bool value) = 0;
-  virtual void OnBytes(unsigned char *data, unsigned int size) = 0;
-  virtual void OnString(const char *data, const unsigned int size) = 0;
-  virtual void OnArray(unsigned int size) = 0;
-  virtual void OnMap(unsigned int size) = 0;
-  virtual void OnTag(uint32_t tag) = 0;
-  virtual void OnSpecial(uint32_t code) = 0;
-  virtual void OnError(const char *error) = 0;
-  virtual void onNull() = 0;
-  virtual void onFloat(const float value) = 0;
-  virtual void onDouble(const double value) = 0;
-  virtual void OnExtraInteger(uint64_t value, int8_t sign) {}
-  virtual void OnExtraTag(uint64_t tag) {}
-  virtual void OnExtraSpecial(uint64_t tag) {}
+  public:
+    virtual void OnInteger(int32_t value) = 0;
+    virtual void OnBoolean(const bool value) = 0;
+    virtual void OnBytes(unsigned char *data, unsigned int size) = 0;
+    virtual void OnString(const char *data, const unsigned int size) = 0;
+    virtual void OnArray(unsigned int size) = 0;
+    virtual void OnMap(unsigned int size) = 0;
+    virtual void OnTag(uint32_t tag) = 0;
+    virtual void OnSpecial(uint32_t code) = 0;
+    virtual void OnError(const char *error) = 0;
+    virtual void onNull() = 0;
+    virtual void onFloat(const float value) = 0;
+    virtual void onDouble(const double value) = 0;
+    virtual void OnExtraInteger(uint64_t value, int8_t sign) {}
+    virtual void OnExtraTag(uint64_t tag) {}
+    virtual void OnExtraSpecial(uint64_t tag) {}
 };
 
 class CborReader {
