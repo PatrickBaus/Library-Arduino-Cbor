@@ -1,7 +1,5 @@
 #include "cborEncoder.h"
 #include "Arduino.h"
-#include <stdlib.h>
-
 
 
 CborStaticOutput::CborStaticOutput(unsigned char* _buffer, const unsigned int _size, const unsigned int _offset): buffer(_buffer), capacity(_size), offset(_offset), cursor(_offset) {}

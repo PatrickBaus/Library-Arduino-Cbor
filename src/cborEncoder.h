@@ -1,5 +1,6 @@
 /*
   Copyright 2014-2015 Stanislav Ovsyannikov
+  Copyright 2018 Patrick Baus
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,11 +17,10 @@
 
 
 
+#ifndef CBORENCODER_H
+#define CBORENCODER_H
 
-#ifndef CBOREN_H
-#define CBOREN_H
-
-#include "Arduino.h"
+#include <stdlib.h>
 
 class CborOutput {
   public:
