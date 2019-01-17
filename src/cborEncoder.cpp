@@ -6,19 +6,19 @@ CborStaticOutput::CborStaticOutput(unsigned char* _buffer, const unsigned int _s
 
 
 void CborStaticOutput::putByte(const unsigned char value) {
-  if (cursor < capacity) {
-    buffer[cursor++] = value;
+  if (this->cursor < this->capacity) {
+    buffer[this->cursor++] = value;
   } else {
-    Serial.print("buffer overflow error");
+//    Serial.print("buffer overflow error");
   }
 }
 
 void CborStaticOutput::putBytes(const unsigned char *data, const unsigned int size) {
-  if (cursor + size - 1 < capacity) {
-    memcpy(buffer + cursor, data, size);
-    cursor += size;
+  if (cursor + size <= capacity) {
+    memcpy(buffer + this->cursor, data, size);
+    this->cursor += size;
   } else {
-    Serial.print("buffer overflow error");
+//    Serial.print("buffer overflow error");
   }
 }
 
@@ -37,7 +37,7 @@ unsigned char *CborStaticOutput::getData() {
 }
 
 unsigned int CborStaticOutput::getSize() {
-  return cursor;
+  return this->cursor;
 }
 
 void CborStaticOutput::resetBuffer() {

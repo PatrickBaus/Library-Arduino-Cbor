@@ -444,7 +444,7 @@ void CborReader::Run() {
     } else if (state == STATE_ERROR) {
       break;
     } else {
-      Serial.print("UNKNOWN STATE");
+//      Serial.print("UNKNOWN STATE");
     }
   }
 }
