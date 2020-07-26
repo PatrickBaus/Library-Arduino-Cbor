@@ -1,3 +1,5 @@
+#include <limits.h>   // INT_MAX
+
 #include "cborDecoder.h"
 #include "Arduino.h"
 
@@ -263,26 +265,24 @@ void CborReader::Run() {
       if (input->hasBytes(currentLength)) {
         switch(currentLength) {
           case 1:
-            listener->OnInteger(-(int32_t)input->getByte());
+            listener->OnInteger(-(int32_t)input->getByte() - 1);
             state = STATE_TYPE;
             break;
           case 2:
-            listener->OnInteger(-(int32_t)input->getShort());
+            listener->OnInteger(-(int32_t)input->getShort() - 1);
             state = STATE_TYPE;
             break;
           case 4:
             temp = input->getInt();
             if (temp <= INT_MAX) {
-              listener->OnInteger(-(int32_t) temp);
-            } else if (temp == 2147483648u) {
-              listener->OnInteger(INT_MIN);
+              listener->OnInteger(-(int32_t) temp - 1);
             } else {
-              listener->OnExtraInteger(temp, -1);
+              listener->OnExtraInteger(temp + 1, -1);   // +1 => -1 if we multiply by the sign (-1)
             }
             state = STATE_TYPE;
             break;
           case 8:
-            listener->OnExtraInteger(input->getLong(), -1);
+            listener->OnExtraInteger(input->getLong() + 1, -1); // +1 => -1 if we multiply by the sign (-1)
             break;
         }
       } else break;
@@ -441,4 +441,20 @@ void CborReader::Run() {
 //      Serial.print("UNKNOWN STATE");
     }
   }
+}
+
+/* Debug Listener */
+void CborDebugListener::OnInteger(int32_t value) {
+  Serial.print("Integer: ");
+  Serial.println(value);
+}
+
+void CborDebugListener::OnBoolean(const bool value) {
+  Serial.print("Boolean: ");
+  Serial.println(value);
+}
+
+void CborDebugListener::OnExtraInteger(uint64_t value, int8_t sign) {
+  Serial.print("Extra integer: ");
+  sign == -1 ? Serial.println(-(int64_t)value): Serial.println(value);
 }

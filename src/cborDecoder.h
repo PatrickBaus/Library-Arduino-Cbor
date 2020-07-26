@@ -23,9 +23,6 @@
 #include <stdint.h>    // uint8_t, etc.
 #include <stdlib.h>    // size_t
 
-#define INT_MAX 2
-#define INT_MIN 2
-
 typedef enum {
   STATE_TYPE,
   STATE_PINT,
@@ -75,6 +72,26 @@ class CborListener {
     virtual void OnExtraTag(uint64_t /*tag*/) {}
     virtual void OnExtraSpecial(uint64_t /*tag*/) {}
 };
+
+class CborDebugListener: public CborListener {
+  public:
+    void OnInteger(int32_t value) override;
+    void OnBoolean(const bool value) override;
+    void OnBytes(unsigned char *data, const size_t size) override {};
+    void OnString(const char *data, const size_t size) override {};
+    void OnArray(unsigned int size) override {};
+    void OnMap(unsigned int size) override {};
+    void OnTag(uint32_t tag) override {};
+    void OnSpecial(uint32_t code) override {};
+    void OnError(const char *error) override {};
+    void onNull() override {};
+    void onFloat(const float value) override {};
+    void onDouble(const double value) override {};
+    void OnExtraInteger(uint64_t value, int8_t sign) override;
+    void OnExtraTag(uint64_t /*tag*/) override {}
+    void OnExtraSpecial(uint64_t /*tag*/) override {}
+};
+
 
 class CborReader {
   public:
