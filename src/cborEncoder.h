@@ -32,7 +32,7 @@ class CborOutput {
 
 class CborStaticOutput : public CborOutput {
   public:
-    CborStaticOutput(unsigned char* _buffer, const unsigned int _size, const unsigned int _offset);
+    CborStaticOutput(unsigned char* _buffer, const unsigned int _size, const unsigned int _offset=0);
     virtual unsigned char *getData();
     virtual unsigned int getSize();
     virtual void putByte(const unsigned char value);
