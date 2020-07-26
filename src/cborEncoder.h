@@ -74,6 +74,8 @@ class CborWriter {
     void writeInt(const uint16_t value);
     void writeInt(const uint32_t value);
     void writeInt(const uint64_t value);
+    void writeFloat(const float value);
+    void writeFloat(const double value);
     void writeBytes(const unsigned char *data, const unsigned int size);
     void writeString(const char *data, const unsigned int size);
     void writeArray(const unsigned int size);

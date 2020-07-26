@@ -67,8 +67,8 @@ class CborListener {
     virtual void OnError(const char *error) = 0;
     virtual void OnNull() = 0;
     virtual void OnUndefined() = 0;
-    virtual void onFloat(const float value) = 0;
-    virtual void onDouble(const double value) = 0;
+    virtual void OnFloat(const float value) = 0;
+    virtual void OnDouble(const double value) = 0;
     virtual void OnExtraInteger(uint64_t /*value*/, int8_t /*sign*/) {}
     virtual void OnExtraTag(uint64_t /*tag*/) {}
     virtual void OnExtraSpecial(uint64_t /*tag*/) {}
@@ -87,8 +87,8 @@ class CborDebugListener: public CborListener {
     void OnError(const char *error) override {};
     void OnNull() override;
     void OnUndefined() override;
-    void onFloat(const float value) override {};
-    void onDouble(const double value) override {};
+    void OnFloat(const float value) override;
+    void OnDouble(const double value) override;
     void OnExtraInteger(uint64_t value, int8_t sign) override;
     void OnExtraTag(uint64_t /*tag*/) override {}
     void OnExtraSpecial(uint64_t /*tag*/) override {}

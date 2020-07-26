@@ -24,13 +24,13 @@ unsigned short CborInput::getShort() {
 }
 
 uint32_t CborInput::getInt() {
-  uint32_t value = ((uint32_t)data[offset] << 24) | ((uint32_t)data[offset + 1] << 16) | ((uint32_t)data[offset + 2] << 8) | ((uint32_t)data[offset + 3]);
+  uint32_t value = ((uint32_t)data[offset] << 24) | ((uint32_t)data[offset + 1] << 16) | ((uint32_t)data[offset + 2] << 8) | ((uint32_t)data[offset + 3] << 0);
   offset += 4;
   return value;
 }
 
 uint64_t CborInput::getLong() {
-  uint64_t value = ((uint64_t)data[offset] << 56) | ((uint64_t)data[offset+1] << 48) | ((uint64_t)data[offset+2] << 40) | ((uint64_t)data[offset+3] << 32) | ((uint64_t)data[offset+4] << 24) | ((uint64_t)data[offset+5] << 16) | ((uint64_t)data[offset+6] << 8) | ((uint64_t)data[offset+7]);
+  uint64_t value = ((uint64_t)data[offset] << 56) | ((uint64_t)data[offset+1] << 48) | ((uint64_t)data[offset+2] << 40) | ((uint64_t)data[offset+3] << 32) | ((uint64_t)data[offset+4] << 24) | ((uint64_t)data[offset+5] << 16) | ((uint64_t)data[offset+6] << 8) | ((uint64_t)data[offset+7] << 0);
   offset += 8;
   return value;
 }
@@ -419,21 +419,20 @@ void CborReader::Run() {
             break;
           }
           case 4: {
-            input->getInt();
             union {
               uint32_t val;
               float f;
              } u = { input->getInt() };
-            listener->onFloat(u.f);
+            listener->OnFloat(u.f);
             state = STATE_TYPE;
             break;
           }
           case 8: {
             union {
               uint64_t val;
-              float d;
+              double d;
             } u = { input->getLong() };
-            listener->onDouble(u.d);
+            listener->OnDouble(u.d);
             state = STATE_TYPE;
             break;
           }
@@ -450,6 +449,16 @@ void CborReader::Run() {
 /* Debug Listener */
 void CborDebugListener::OnInteger(int32_t value) {
   Serial.print("Integer: ");
+  Serial.println(value);
+}
+
+void CborDebugListener::OnFloat(float value) {
+  Serial.print("Float: ");
+  Serial.println(value);
+}
+
+void CborDebugListener::OnDouble(double value) {
+  Serial.print("Double: ");
   Serial.println(value);
 }
 
