@@ -7,9 +7,6 @@ CborInput::CborInput(void *data, const size_t size) {
   this->offset = 0;
 }
 
-CborInput::~CborInput() {}
-
-
 bool CborInput::hasBytes(const size_t count) {
   return size - offset >= count;
 }
@@ -52,9 +49,6 @@ CborReader::CborReader(CborInput &input, CborListener &listener) {
   this->listener = &listener;
   this->state = STATE_TYPE;
 }
-
-CborReader::~CborReader() {}
-
 
 void CborReader::SetListener(CborListener &listener) {
   this->listener = &listener;

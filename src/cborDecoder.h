@@ -44,7 +44,6 @@ typedef enum {
 class CborInput {
   public:
     CborInput(void *data, const size_t size);
-    ~CborInput();
 
     bool hasBytes(const size_t count);
     unsigned char getByte();
@@ -81,7 +80,6 @@ class CborReader {
   public:
     CborReader(CborInput &input);
     CborReader(CborInput &input, CborListener &listener);
-    ~CborReader();
     void Run();
     void SetListener(CborListener &listener);
   private:
