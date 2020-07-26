@@ -72,9 +72,9 @@ class CborListener {
     virtual void onNull() = 0;
     virtual void onFloat(const float value) = 0;
     virtual void onDouble(const double value) = 0;
-    virtual void OnExtraInteger(uint64_t value, int8_t sign) {}
-    virtual void OnExtraTag(uint64_t tag) {}
-    virtual void OnExtraSpecial(uint64_t tag) {}
+    virtual void OnExtraInteger(uint64_t /*value*/, int8_t /*sign*/) {}
+    virtual void OnExtraTag(uint64_t /*tag*/) {}
+    virtual void OnExtraSpecial(uint64_t /*tag*/) {}
 };
 
 class CborReader {
