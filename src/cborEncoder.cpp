@@ -218,3 +218,7 @@ void CborWriter::writeTag(const uint32_t tag) {
 void CborWriter::writeSpecial(const uint32_t special) {
   writeTypeAndValue(7, special);
 }
+
+void CborWriter::writeBoolean(const bool value) {
+   output->putByte((unsigned char) (value ? 0xf5: 0xf4));
+} 

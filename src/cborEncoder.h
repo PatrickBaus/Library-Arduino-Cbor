@@ -82,6 +82,7 @@ class CborWriter {
     void endMap();
     void writeTag(const uint32_t tag);
     void writeSpecial(const uint32_t special);
+    void writeBoolean(const bool value);
   private:
     void writeBreakCode();
     void writeTypeAndValue(uint8_t majorType, const uint32_t value);
