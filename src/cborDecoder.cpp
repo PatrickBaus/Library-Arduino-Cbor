@@ -311,10 +311,12 @@ void CborReader::Run() {
       } else break;
     } else if (state == STATE_BYTES_DATA) {
       if (input->hasBytes(currentLength)) {
+        // TODO: Move this to an external fixed size buffer
         unsigned char *data = new unsigned char[currentLength];
         input->getBytes(data, currentLength);
         state = STATE_TYPE;
         listener->OnBytes(data, currentLength);
+        delete[] data;
       } else break;
     } else if (state == STATE_STRING_SIZE) {
       if (input->hasBytes(currentLength)) {
