@@ -66,9 +66,12 @@ class CborWriter {
     CborWriter(CborOutput &output);
     ~CborWriter();
 
-    void writeInt(const int value);
+    void writeInt(const int8_t value);
+    void writeInt(const int16_t value);
     void writeInt(const int32_t value);
     void writeInt(const int64_t value);
+    void writeInt(const uint8_t value);
+    void writeInt(const uint16_t value);
     void writeInt(const uint32_t value);
     void writeInt(const uint64_t value);
     void writeBytes(const unsigned char *data, const unsigned int size);

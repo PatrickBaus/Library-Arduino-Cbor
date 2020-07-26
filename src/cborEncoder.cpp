@@ -118,6 +118,7 @@ void CborWriter::writeTypeAndValue(uint8_t majorType, const uint64_t value) {
   } else if (value < 65536ULL) {
     output->putByte(majorType | 25);
     output->putByte(value >> 8);
+    output->putByte(value);
   } else if (value < 4294967296ULL) {
     output->putByte(majorType | 26);
     output->putByte(value >> 24);
@@ -145,9 +146,11 @@ void CborWriter::writeBreakCode() {
   output->putByte((7 << 5) | 31);
 }
 
+void CborWriter::writeInt(const uint8_t value) {
+  writeTypeAndValue(0, (uint32_t)value);
+}
 
-void CborWriter::writeInt(const int value) {
-  // This will break on 64-bit platforms
+void CborWriter::writeInt(const uint16_t value) {
   writeTypeAndValue(0, (uint32_t)value);
 }
 
@@ -173,6 +176,14 @@ void CborWriter::writeInt(const int32_t value) {
   } else {
     writeTypeAndValue(0, (uint32_t) value);
   }
+}
+
+void CborWriter::writeInt(const int16_t value) {
+  writeInt((int32_t)value);
+}
+
+void CborWriter::writeInt(const int8_t value) {
+  writeInt((int32_t)value);
 }
 
 void CborWriter::writeBytes(const unsigned char *data, const unsigned int size) {
