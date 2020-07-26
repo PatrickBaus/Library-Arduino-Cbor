@@ -220,5 +220,9 @@ void CborWriter::writeSpecial(const uint32_t special) {
 }
 
 void CborWriter::writeBoolean(const bool value) {
-   output->putByte((unsigned char) (value ? 0xf5: 0xf4));
-} 
+  writeTypeAndValue(7, value ? (uint32_t)21 : (uint32_t)20);
+}
+
+void CborWriter::writeNull() {
+  writeTypeAndValue(7, (uint32_t)22);
+}

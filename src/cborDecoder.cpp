@@ -215,7 +215,7 @@ void CborReader::Run() {
             } else if (minorType < 22) {
               listener->OnBoolean(minorType == 21);
             } else if (minorType < 24) {
-              listener->onNull();
+              listener->OnNull();
             } else if (minorType == 24) {
               state = STATE_PINT;
               currentLength = 1;
@@ -452,6 +452,10 @@ void CborDebugListener::OnInteger(int32_t value) {
 void CborDebugListener::OnBoolean(const bool value) {
   Serial.print("Boolean: ");
   Serial.println(value);
+}
+
+void CborDebugListener::OnNull() {
+  Serial.println("Null");
 }
 
 void CborDebugListener::OnExtraInteger(uint64_t value, int8_t sign) {
