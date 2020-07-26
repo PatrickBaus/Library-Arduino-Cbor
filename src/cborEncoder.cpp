@@ -50,7 +50,7 @@ CborDynamicOutput::CborDynamicOutput(const uint32_t initalCapacity) {
 }
 
 CborDynamicOutput::~CborDynamicOutput() {
-  delete buffer;
+  delete[] buffer;
 }
 
 void CborDynamicOutput::init(unsigned int initalCapacity) {
