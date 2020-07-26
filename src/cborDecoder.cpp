@@ -214,8 +214,10 @@ void CborReader::Run() {
               listener->OnError("Unassigned special type");
             } else if (minorType < 22) {
               listener->OnBoolean(minorType == 21);
-            } else if (minorType < 24) {
+            } else if (minorType == 22) {
               listener->OnNull();
+            } else if (minorType == 23) {
+              listener->OnUndefined();
             } else if (minorType == 24) {
               state = STATE_PINT;
               currentLength = 1;
@@ -456,6 +458,10 @@ void CborDebugListener::OnBoolean(const bool value) {
 
 void CborDebugListener::OnNull() {
   Serial.println("Null");
+}
+
+void CborDebugListener::OnUndefined() {
+  Serial.println("Undefined");
 }
 
 void CborDebugListener::OnExtraInteger(uint64_t value, int8_t sign) {

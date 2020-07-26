@@ -226,3 +226,8 @@ void CborWriter::writeBoolean(const bool value) {
 void CborWriter::writeNull() {
   writeTypeAndValue(7, (uint32_t)22);
 }
+
+void CborWriter::writeUndefined() {
+  writeTypeAndValue(7, (uint32_t)23);
+}
+
