@@ -94,17 +94,20 @@ void CborWriter::writeTypeAndValue(uint8_t majorType, const uint32_t value) {
     output->putByte(majorType | value);
   } else if (value < 256) {
     output->putByte(majorType | 24);  // 24 = next byte is uint8_t
+
     output->putByte(value);
   } else if (value < 65536) {
     output->putByte(majorType | 25);
+
     output->putByte(value >> 8);
-    output->putByte(value);
+    output->putByte(value >> 0);
   } else {
     output->putByte(majorType | 26);
+
     output->putByte(value >> 24);
     output->putByte(value >> 16);
     output->putByte(value >> 8);
-    output->putByte(value);
+    output->putByte(value >> 0);
   }
 }
 
@@ -114,19 +117,23 @@ void CborWriter::writeTypeAndValue(uint8_t majorType, const uint64_t value) {
     output->putByte(majorType | value);
   } else if (value < 256ULL) {
     output->putByte(majorType | 24);
-    output->putByte(value);
+
+    output->putByte(value >> 0);
   } else if (value < 65536ULL) {
     output->putByte(majorType | 25);
+
     output->putByte(value >> 8);
-    output->putByte(value);
+    output->putByte(value >> 0);
   } else if (value < 4294967296ULL) {
     output->putByte(majorType | 26);
+
     output->putByte(value >> 24);
     output->putByte(value >> 16);
     output->putByte(value >> 8);
-    output->putByte(value);
+    output->putByte(value >> 0);
   } else {
     output->putByte(majorType | 27);
+
     output->putByte(value >> 56);
     output->putByte(value >> 48);
     output->putByte(value >> 40);
@@ -134,7 +141,7 @@ void CborWriter::writeTypeAndValue(uint8_t majorType, const uint64_t value) {
     output->putByte(value >> 24);
     output->putByte(value >> 16);
     output->putByte(value >> 8);
-    output->putByte(value);
+    output->putByte(value >> 0);
   }
 }
 
@@ -192,11 +199,11 @@ void CborWriter::writeFloat(const float value) {
     float f;
   } u = { .f=value };
   // Major type 7 and minor type 26 is 32 bits IEEE 754
-  output->putByte((unsigned char) (7<<5) | 26);
+  output->putByte((unsigned char) (7 << 5) | 26);
   output->putByte(u.val >> 24);
   output->putByte(u.val >> 16);
   output->putByte(u.val >> 8);
-  output->putByte(u.val);
+  output->putByte(u.val >> 0);
 }
 
 void CborWriter::writeFloat(const double value) {
@@ -205,7 +212,7 @@ void CborWriter::writeFloat(const double value) {
     double d;
   } u = { .d=value };
   // Major type 7 and minor type 27 is 64 bits IEEE 754
-  output->putByte((unsigned char) (7<<5) | 27);
+  output->putByte((unsigned char) (7 << 5) | 27);
   output->putByte(u.val >> 56);
   output->putByte(u.val >> 48);
   output->putByte(u.val >> 40);
@@ -213,7 +220,7 @@ void CborWriter::writeFloat(const double value) {
   output->putByte(u.val >> 24);
   output->putByte(u.val >> 16);
   output->putByte(u.val >> 8);
-  output->putByte(u.val);
+  output->putByte(u.val >> 0);
 }
 
 void CborWriter::writeBytes(const unsigned char *data, const unsigned int size) {
