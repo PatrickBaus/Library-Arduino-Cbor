@@ -1,7 +1,7 @@
 #include <limits.h>   // INT_MAX
+#include <string.h>   // memcpy
 
 #include "cborDecoder.h"
-#include "Arduino.h"
 
 CborInput::CborInput(void *data, const size_t size) {
   this->data = (unsigned char *)data;
@@ -446,36 +446,3 @@ void CborReader::Run() {
   }
 }
 
-/* Debug Listener */
-void CborDebugListener::OnInteger(int32_t value) {
-  Serial.print("Integer: ");
-  Serial.println(value);
-}
-
-void CborDebugListener::OnFloat(float value) {
-  Serial.print("Float: ");
-  Serial.println(value);
-}
-
-void CborDebugListener::OnDouble(double value) {
-  Serial.print("Double: ");
-  Serial.println(value);
-}
-
-void CborDebugListener::OnBoolean(const bool value) {
-  Serial.print("Boolean: ");
-  Serial.println(value);
-}
-
-void CborDebugListener::OnNull() {
-  Serial.println("Null");
-}
-
-void CborDebugListener::OnUndefined() {
-  Serial.println("Undefined");
-}
-
-void CborDebugListener::OnExtraInteger(uint64_t value, int8_t sign) {
-  Serial.print("Extra integer: ");
-  sign == -1 ? Serial.println(-(int64_t)value): Serial.println(value);
-}

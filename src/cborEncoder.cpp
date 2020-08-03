@@ -190,7 +190,7 @@ void CborWriter::writeFloat(const float value) {
   union {
     uint32_t val;
     float f;
-  } u = { value };
+  } u = { .f=value };
   // Major type 7 and minor type 26 is 32 bits IEEE 754
   output->putByte((unsigned char) (7<<5) | 26);
   output->putByte(u.val >> 24);
@@ -203,13 +203,13 @@ void CborWriter::writeFloat(const double value) {
   union {
     uint64_t val;
     double d;
-  } u = { value };
+  } u = { .d=value };
   // Major type 7 and minor type 27 is 64 bits IEEE 754
   output->putByte((unsigned char) (7<<5) | 27);
-  output->putByte(value >> 56);
-  output->putByte(value >> 48);
-  output->putByte(value >> 40);
-  output->putByte(value >> 32);
+  output->putByte(u.val >> 56);
+  output->putByte(u.val >> 48);
+  output->putByte(u.val >> 40);
+  output->putByte(u.val >> 32);
   output->putByte(u.val >> 24);
   output->putByte(u.val >> 16);
   output->putByte(u.val >> 8);
