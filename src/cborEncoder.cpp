@@ -252,10 +252,6 @@ void CborWriter::writeTag(const uint32_t tag) {
   writeTypeAndValue(6, tag);
 }
 
-void CborWriter::writeSpecial(const uint32_t special) {
-  writeTypeAndValue(7, special);
-}
-
 void CborWriter::writeBoolean(const bool value) {
   writeTypeAndValue(7, value ? (uint32_t)21 : (uint32_t)20);
 }
