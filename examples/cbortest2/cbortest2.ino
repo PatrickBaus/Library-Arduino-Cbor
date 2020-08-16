@@ -1,67 +1,54 @@
-/*
-
-Arduino Sketch to show how encode and Decode Cbor package
-
-Author: Juanjo Tara 
-email:  j.tara@arduino.cc
-date:	24/04/2015
-*/
-
-
-
-
-#include "CborEncoder.h"
-#include "CborDecoder.h"
-
-//String to save the cbor data
-String dt = "";
-String valuetoInt = "";	
-unsigned int sizeee;
-int valuein;
-
+#include "cborEncoder.h"
+#include "cborDecoder.h"
+#include "cborDebugListener.h"
 
 void setup() {
-
   Serial.begin(9600);
-  //Serial.print("hola");
-  test1();
+  uint32_t countdownBegin = millis();
+  while (!Serial && ((millis() - countdownBegin) < 1000)) {};
+
+  test();
 }
 
 void loop() {
-
-
+  while(Serial.available()) {
+   Serial.read();
+  }
 }
 
+void test() {
+	// Create buffer,  object and writer
+  uint8_t outputBuffer[32];
+  CborStaticOutput output(outputBuffer, 32);
+  CborWriter writer(output);
 
+  // Create CBOR packet
+  // Chose which one by uncommenting
+//  writer.writeInt((uint64_t)65535); // uint32_t, uint16_t and uint8_t are also possible
+//  writer.writeBoolean(false);
+//  writer.writeNull();
+//  writer.writeUndefined();
+  writer.writeFloat((double)2.0);   // float is also possible
+  Serial.print("Size of CBOR packet: ");
+  Serial.println(output.getSize());
+  for (size_t i = 0; i < output.getSize()-1; i++) {
+    if (outputBuffer[i] < 10) {
+      Serial.print(0);
+    }
+    Serial.print(outputBuffer[i], HEX);
+  }
+  if (outputBuffer[output.getSize()-1] < 10) {
+    Serial.print(0);
+  }
+  Serial.println(outputBuffer[output.getSize()-1], HEX);
+	delay(1000);
 
-void test1() {
-
-	//Create object and Writer
-    	CborStaticOutput output(32);
-    	CborWriter writer(output);
-
-    	//Write a Cbor Package with a number and String 
-   	 writer.writeInt(124);
-	writer.writeString("I");
-
-    	sizeee = output.getSize();
-    	Serial.print("datalength:");
-    	Serial.println(sizeee);
-
-    	delay(1000);
-
-	//Receiver for the Cbor input
-    	CborInput input(output.getData(), output.getSize());
-	CborDebugListener listener;
-	CborReader reader(input);
-	reader.SetListener(listener);
-	//Save all the cbor into a String divived by commas 
-	reader.GetCborData(dt);
-   
-
-	valuetoInt = dt.substring(0, dt.indexOf(','));
-	valuein = valuetoInt.toInt();
-  
-	Serial.print(valuetoInt.toInt());
-
+  // Decode the packet
+  CborInput input(output.getData(), output.getSize());
+  CborReader reader(input);
+  // Create a listener object.
+  CborDebugListener listener;
+  // Initalize the listener.
+  reader.SetListener(listener);
+  reader.Run();
 }
