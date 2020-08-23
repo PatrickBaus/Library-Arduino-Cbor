@@ -62,7 +62,6 @@ class CborListener {
     virtual void OnTextString(char *data, const size_t size) = 0;
     virtual void OnArray(const size_t size) = 0;
     virtual void OnMap(const size_t size) = 0;
-    virtual void OnError(const char *error) = 0;
     virtual void OnHalf(const uint16_t /*value*/) {};
     virtual void OnFloat(const float value) = 0;
     virtual void OnDouble(const double value) = 0;
@@ -71,6 +70,7 @@ class CborListener {
     virtual void OnNull() {};
     virtual void OnUndefined() {};
     virtual void OnExtraInteger(const uint64_t /*value*/, const int8_t /*sign*/) {}
+    virtual void OnError(const char *error) = 0;
 };
 
 class CborReader {
