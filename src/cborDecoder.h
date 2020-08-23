@@ -43,8 +43,8 @@ class CborInput {
     CborInput(void *data, const size_t size);
 
     bool hasBytes(const size_t count);
-    unsigned char getByte();
-    unsigned short getShort();
+    uint8_t getByte();
+    uint16_t getShort();
     uint32_t getInt();
     uint64_t getLong();
     void getBytes(void *to, const size_t count);
@@ -56,22 +56,21 @@ class CborInput {
 
 class CborListener {
   public:
-    virtual void OnInteger(int32_t value) = 0;
+    virtual void OnInteger(const int32_t value) = 0;
     virtual void OnBoolean(const bool value) = 0;
-    virtual void OnBytes(unsigned char *data, const size_t size) = 0;
-    virtual void OnString(const char *data, const size_t size) = 0;
-    virtual void OnArray(unsigned int size) = 0;
-    virtual void OnMap(unsigned int size) = 0;
+    virtual void OnByteString(unsigned char *data, const size_t size) = 0;
+    virtual void OnTextString(char *data, const size_t size) = 0;
+    virtual void OnArray(const size_t size) = 0;
+    virtual void OnMap(const size_t size) = 0;
     virtual void OnError(const char *error) = 0;
+    virtual void OnHalf(const uint16_t /*value*/) {};
     virtual void OnFloat(const float value) = 0;
     virtual void OnDouble(const double value) = 0;
-    virtual void OnTag(uint32_t tag) {};
-    virtual void OnSpecial(uint32_t code) {};
+    virtual void OnTag(const uint32_t /*tag*/) {};
+    virtual void OnExtraTag(const uint64_t /*tag*/) {}
     virtual void OnNull() {};
     virtual void OnUndefined() {};
-    virtual void OnExtraInteger(uint64_t /*value*/, int8_t /*sign*/) {}
-    virtual void OnExtraTag(uint64_t /*tag*/) {}
-    virtual void OnExtraSpecial(uint64_t /*tag*/) {}
+    virtual void OnExtraInteger(const uint64_t /*value*/, const int8_t /*sign*/) {}
 };
 
 class CborReader {
@@ -84,7 +83,7 @@ class CborReader {
     CborListener *listener;
     CborInput *input;
     CborReaderState state;
-    unsigned int currentLength;
+    uint8_t currentLength;
 };
 #endif    // CBORDECODER_H
 

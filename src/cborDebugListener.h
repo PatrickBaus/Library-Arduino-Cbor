@@ -21,21 +21,21 @@
 
 class CborDebugListener: public CborListener {
   public:
-    void OnInteger(int32_t value) override;
+    void OnInteger(const int32_t value) override;
     void OnBoolean(const bool value) override;
-    void OnBytes(unsigned char *data, const size_t size) override {};
-    void OnString(const char *data, const size_t size) override {};
-    void OnArray(unsigned int size) override {};
-    void OnMap(unsigned int size) override {};
-    void OnError(const char *error) override {};
+    void OnByteString(unsigned char *data, const size_t size) override;
+    void OnTextString(char *data, const size_t size) override;
+    void OnArray(const size_t size) override;
+    void OnMap(const size_t size) override;
+    void OnHalf(const uint16_t /*value*/) override {};
     void OnFloat(const float value) override;
-    void OnDouble(const double value) override;    void OnNull() override;
-    void OnTag(uint32_t tag) override {};
-    void OnSpecial(uint32_t code) override {};
+    void OnDouble(const double value) override;
+    void OnNull() override;
+    void OnTag(const uint32_t /*tag*/) override {};
     void OnUndefined() override;
-    void OnExtraInteger(uint64_t value, int8_t sign) override;
-    void OnExtraTag(uint64_t /*tag*/) override {}
-    void OnExtraSpecial(uint64_t /*tag*/) override {}
+    void OnExtraInteger(const uint64_t value, const int8_t sign) override;
+    void OnExtraTag(const uint64_t /*tag*/) override {}
+    void OnError(const char */*error*/) override {};
 };
 
 #endif  // CBOR_DEBUG_LISTENER_H

@@ -13,24 +13,41 @@ bool CborInput::hasBytes(const size_t count) {
   return size - offset >= count;
 }
 
-unsigned char CborInput::getByte() {
+uint8_t CborInput::getByte() {
   return data[offset++];
 }
 
-unsigned short CborInput::getShort() {
-  unsigned short value = ((unsigned short)data[offset] << 8) | ((unsigned short)data[offset + 1]);
+uint16_t CborInput::getShort() {
+  uint16_t value =
+      ((uint16_t)data[offset] << 8)
+    | ((uint16_t)data[offset + 1])
+  ;
   offset += 2;
   return value;
 }
 
 uint32_t CborInput::getInt() {
-  uint32_t value = ((uint32_t)data[offset] << 24) | ((uint32_t)data[offset + 1] << 16) | ((uint32_t)data[offset + 2] << 8) | ((uint32_t)data[offset + 3] << 0);
+  uint32_t value =
+      ((uint32_t)data[offset] << 24)
+    | ((uint32_t)data[offset + 1] << 16)
+    | ((uint32_t)data[offset + 2] << 8)
+    | ((uint32_t)data[offset + 3] << 0)
+  ;
   offset += 4;
   return value;
 }
 
 uint64_t CborInput::getLong() {
-  uint64_t value = ((uint64_t)data[offset] << 56) | ((uint64_t)data[offset+1] << 48) | ((uint64_t)data[offset+2] << 40) | ((uint64_t)data[offset+3] << 32) | ((uint64_t)data[offset+4] << 24) | ((uint64_t)data[offset+5] << 16) | ((uint64_t)data[offset+6] << 8) | ((uint64_t)data[offset+7] << 0);
+  uint64_t value =
+      ((uint64_t)data[offset] << 56)
+    | ((uint64_t)data[offset+1] << 48)
+    | ((uint64_t)data[offset+2] << 40)
+    | ((uint64_t)data[offset+3] << 32)
+    | ((uint64_t)data[offset+4] << 24)
+    | ((uint64_t)data[offset+5] << 16)
+    | ((uint64_t)data[offset+6] << 8)
+    | ((uint64_t)data[offset+7] << 0)
+  ;
   offset += 8;
   return value;
 }
@@ -61,12 +78,12 @@ void CborReader::Run() {
   while(1) {
     if (state == STATE_TYPE) {
       if (input->hasBytes(1)) {
-        unsigned char type = input->getByte();
-        unsigned char majorType = type >> 5;
-        unsigned char minorType = type & 31;
+        uint8_t type = input->getByte();
+        uint8_t majorType = type >> 5;
+        uint8_t minorType = type & 31;
 
         switch(majorType) {
-          case 0: // positive integer
+          case 0: // Positive integer
             if (minorType < 24) {
               listener->OnInteger(minorType);
             } else if (minorType == 24) { // 1 byte
@@ -86,7 +103,7 @@ void CborReader::Run() {
               listener->OnError("invalid integer type");
             }
             break;
-          case 1: // negative integer
+          case 1: // Negative integer
             if (minorType < 24) {
               listener->OnInteger(-1 - minorType);
             } else if (minorType == 24) { // 1 byte
@@ -106,7 +123,7 @@ void CborReader::Run() {
               listener->OnError("invalid integer type");
             }
             break;
-          case 2: // bytes
+          case 2: // Byte string
             if (minorType < 24) {
               state = STATE_BYTES_DATA;
               currentLength = minorType;
@@ -127,7 +144,7 @@ void CborReader::Run() {
               listener->OnError("invalid bytes type");
             }
             break;
-          case 3: // string
+          case 3: // Text string
             if (minorType < 24) {
               state = STATE_STRING_DATA;
               currentLength = minorType;
@@ -148,7 +165,7 @@ void CborReader::Run() {
               listener->OnError("invalid string type");
             }
             break;
-          case 4: // array
+          case 4: // Array of data items
             if (minorType < 24) {
               listener->OnArray(minorType);
             } else if (minorType == 24) {
@@ -168,7 +185,7 @@ void CborReader::Run() {
               listener->OnError("invalid array type");
             }
             break;
-          case 5: // map
+          case 5: // Map of pairs of data items
             if (minorType < 24) {
               listener->OnMap(minorType);
             } else if (minorType == 24) {
@@ -188,7 +205,7 @@ void CborReader::Run() {
               listener->OnError("invalid array type");
             }
             break;
-          case 6: // tag
+          case 6: // Semantic tag
             if (minorType < 24) {
               listener->OnTag(minorType);
             } else if (minorType == 24) {
@@ -208,7 +225,7 @@ void CborReader::Run() {
               listener->OnError("invalid tag type");
             }
             break;
-          case 7: // special
+          case 7: // Primitives
             if (minorType < 20) {
               state = STATE_ERROR;
               listener->OnError("Unassigned special type");
@@ -315,7 +332,7 @@ void CborReader::Run() {
         unsigned char *data = new unsigned char[currentLength];
         input->getBytes(data, currentLength);
         state = STATE_TYPE;
-        listener->OnBytes(data, currentLength);
+        listener->OnByteString(data, currentLength);
         delete[] data;
       } else break;
     } else if (state == STATE_STRING_SIZE) {
@@ -345,7 +362,7 @@ void CborReader::Run() {
         input->getBytes(data, currentLength);
         state = STATE_TYPE;
         // Note: *data will be invalid once we leave the function, so it is up to the user to copy it.
-        listener->OnString(data, currentLength);
+        listener->OnTextString(data, currentLength);
       } else break;
     } else if (state == STATE_ARRAY) {
       if (input->hasBytes(currentLength)) {
@@ -414,7 +431,11 @@ void CborReader::Run() {
       if (input->hasBytes(currentLength)) {
         switch (currentLength) {
           case 2: {
-            listener->OnSpecial(input->getByte());    // TODO: cast from half to float. Check: https://github.com/numpy/numpy/blob/master/numpy/core/src/npymath/halffloat.c#L466
+            // TODO: cast from half to float.
+            // Check: https://github.com/numpy/numpy/blob/master/numpy/core/src/npymath/halffloat.c#L466
+            // or here: https://gist.github.com/castano/2150795
+            // and here: https://fgiesen.wordpress.com/2012/03/28/half-to-float-done-quic/
+            listener->OnHalf(input->getShort());
             state = STATE_TYPE;
             break;
           }
