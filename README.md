@@ -1,4 +1,4 @@
-cbor-cpp
+CBOR-CPP
 ========
 
 CBOR C++ serialization library
@@ -22,7 +22,7 @@ Writing:
   writer.writeInt(321);
 
   unsigned char *data = output.getData();
-  int size = output.getSize();
+  size_t size = output.getSize();
 ```
 
 Reading:
@@ -30,48 +30,43 @@ Reading:
 ```C++
   class CborExampleListener : public CborListener {
   public:
-    virtual void OnInteger(int32_t value);
-    virtual void OnBytes(unsigned char *data, unsigned int size);
-    virtual void OnString(std::string &str);
-    virtual void OnArray(unsigned int size);
-    virtual void OnMap(unsigned int size);
-    virtual void OnTag(uint32_t tag);
-    virtual void OnSpecial(uint32_t code);
+    virtual void OnInteger(const int32_t value);
+    virtual void OnByteString(unsigned char *data, const size_t size);
+    virtual void OnTextString(char *data, const size_t size);
+    virtual void OnArray(const size_t size);
+    virtual void OnMap(const size_t size);
+    virtual OnTag(const uint32_t tag);
     virtual void OnError(const char *error);
   };
 
   ...
-  
-  void CborExampleListener::OnInteger(int32_t value) {
-    printf("integer: %d\n", value);
+
+  void CborExampleListener::OnInteger(const int32_t value) {
+    printf("Integer: %d\n", value);
   }
-  
-  void CborExampleListener::OnBytes(unsigned char *data, unsigned int size) {
-    printf("bytes with size: %d", size);
+
+  void CborExampleListener::OnByteString(unsigned char *data, const size_t size) {
+    printf("Byte string of size: %d", size);
   }
-  
-  void CborExampleListener::OnString(string &str) {
-    printf("string: '%.*s'\n", (int)str.size(), str.c_str());
+
+  void CborExampleListener::OnTextString(char *data, const size_t size) {
+    printf("UTF-8 string of size: %d", size);
   }
-  
-  void CborExampleListener::OnArray(unsigned int size) {
-    printf("array: %d\n", size);
+
+  void CborExampleListener::OnArray(const size_t size) {
+    printf("Array of size: %d\n", size);
   }
-  
-  void CborExampleListener::OnMap(unsigned int size) {
-    printf("map: %d\n", size);
+
+  void CborExampleListener::OnMap(const size_t size) {
+    printf("Map of size: %d\n", size);
   }
-  
-  void CborExampleListener::OnTag(unsigned int tag) {
-    printf("tag: %d\n", tag);
+
+  void CborExampleListener::OnTag(const uint32_t tag) {
+    printf("Tag: %d\n", tag);
   }
-  
-  void CborExampleListener::OnSpecial(unsigned int code) {
-    printf("special: %d\n", code);
-  }
-  
+
   void CborExampleListener::OnError(const char *error) {
-    printf("error: %s\n", error);
+    printf("Error: %s\n", error);
   }
   
   ...
